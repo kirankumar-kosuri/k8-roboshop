@@ -34,7 +34,7 @@ spec:
         tier: backend
     spec:
       containers:
-      - name: catalogue
+      - name: shipping
         image: kirankumarkosuri/shipping:v1
         imagePullPolicy: Always
         envFrom:
