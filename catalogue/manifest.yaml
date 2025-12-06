@@ -25,6 +25,7 @@ spec:
       containers:
       - name: catalogue
         image: kirankumarkosuri/catalogue:v1
+        imagePullPolicy: Always
 
         ports:
         - name: liveness-port
