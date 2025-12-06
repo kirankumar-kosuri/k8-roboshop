@@ -12,6 +12,7 @@ kind: Deployment
 metadata:
   name: catalogue
   namespace: roboshop
+  # these are replica set labels
   labels:
     project: roboshop
     component: catalogue
@@ -19,17 +20,18 @@ metadata:
 spec:
   replicas: 1
   selector:
+    # these labels are used to select pods
     matchLabels:
       project: roboshop
       component: catalogue
       tier: backend
+  # pod definition
   template:
     metadata:
       labels:
         project: roboshop
         component: catalogue
         tier: backend
-
     spec:
       containers:
       - name: catalogue
@@ -38,11 +40,9 @@ spec:
         envFrom:
         - configMapRef:
             name: catalogue
-
         ports:
         - name: liveness-port
           containerPort: 8080
-
         readinessProbe:
           httpGet:
             path: /health
@@ -51,13 +51,11 @@ spec:
           periodSeconds: 15
         livenessProbe:
           httpGet:
-            path: /healthz
+            path: /health
             port: liveness-port
           failureThreshold: 1
           periodSeconds: 15
-
 ---
-
 apiVersion: v1
 kind: Service
 metadata:
@@ -69,6 +67,6 @@ spec:
     component: catalogue
     tier: backend
   ports:
-  - protocol: TCP
-    port: 8080
-    targetPort: 8080 
+    - protocol: TCP
+      port: 8080 # service port
+      targetPort: 8080 # container port
